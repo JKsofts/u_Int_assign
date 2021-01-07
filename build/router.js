@@ -13,9 +13,12 @@ var _HealthcheckController = _interopRequireDefault(require("./controllers/Healt
 
 var _RegisterController = require("./controllers/RegisterController");
 
+var _WorkloadController = require("./controllers/WorkloadController");
+
 var router = _express["default"].Router();
 
 router.use("/", _RegisterController.RegisterController);
 router.use("/", _HealthcheckController["default"]);
+router.use("/", _WorkloadController.WorkloadController);
 var _default = router;
 exports["default"] = _default;

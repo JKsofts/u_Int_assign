@@ -12,3 +12,5 @@ services:
       - "33306:3306"
     volumes:
       - ./database:/docker-entrypoint-initdb.d:ro
+    security_opt:
+      - seccomp:unconfined

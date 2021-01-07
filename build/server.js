@@ -8,14 +8,14 @@ var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/
 
 require("dotenv/config");
 
-var _database = _interopRequireDefault(require("./config/database"));
-
 var _logger = _interopRequireDefault(require("./config/logger"));
 
 var _app = _interopRequireDefault(require("./app"));
 
+var _index = require("./models/index");
+
 var MAX_RETRY = 20;
-var LOG = new _logger["default"]('server.js');
+var LOG = new _logger["default"]("server.js");
 var _process$env$PORT = process.env.PORT,
     PORT = _process$env$PORT === void 0 ? 3000 : _process$env$PORT;
 
@@ -28,7 +28,7 @@ var startApplication = /*#__PURE__*/function () {
           case 0:
             _context2.prev = 0;
             _context2.next = 3;
-            return _database["default"].authenticate();
+            return _index.sequelize.authenticate();
 
           case 3:
             _app["default"].listen(PORT, function () {
@@ -70,7 +70,7 @@ var startApplication = /*#__PURE__*/function () {
             return _context2.abrupt("return");
 
           case 13:
-            LOG.error('Unable to start application');
+            LOG.error("Unable to start application");
 
           case 14:
           case "end":

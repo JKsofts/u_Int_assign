@@ -19,8 +19,6 @@ var _router = _interopRequireDefault(require("./router"));
 
 var _globalErrorHandler = _interopRequireDefault(require("./config/globalErrorHandler"));
 
-var _expressValidator = _interopRequireDefault(require("express-validator"));
-
 var App = (0, _express["default"])();
 App.use((0, _compression["default"])());
 App.use((0, _cors["default"])());

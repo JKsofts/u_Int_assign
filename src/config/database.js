@@ -1,4 +1,3 @@
-import Sequelize from 'sequelize';
 import Logger from './logger';
 
 const LOG = new Logger('database.js');
@@ -12,10 +11,10 @@ const {
   DB_POOL_IDLE = '10000',
   DB_POOL_MAX_CONN = '10',
   DB_POOL_MIN_CONN = '1',
-  DB_LOG_LEVEL = 'info',
-} = process.env
+  DB_LOG_LEVEL = 'info'
+} = process.env;
 
-const sequelize = new Sequelize(DB_SCHEMA, DB_USER, DB_PW, {
+const CONFIG = {
   dialect: 'mysql',
   host: DB_HOST,
   port: parseInt(DB_PORT),
@@ -29,7 +28,6 @@ const sequelize = new Sequelize(DB_SCHEMA, DB_USER, DB_PW, {
   logging: (msg) => {
     LOG[DB_LOG_LEVEL](msg);
   }
-});
+};
 
-export default sequelize;
-
+export { DB_SCHEMA, DB_USER, DB_PW, CONFIG };
