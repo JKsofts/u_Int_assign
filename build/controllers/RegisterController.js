@@ -5,7 +5,9 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.RegisterController = exports.RegisterHandler = void 0;
+exports["default"] = void 0;
+
+var _slicedToArray2 = _interopRequireDefault(require("@babel/runtime/helpers/slicedToArray"));
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -13,9 +15,9 @@ var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/
 
 var _express = _interopRequireDefault(require("express"));
 
-var _httpStatusCodes = require("http-status-codes");
-
 var _expressValidator = require("express-validator");
+
+var _httpStatusCodes = require("http-status-codes");
 
 var _logger = _interopRequireDefault(require("../config/logger"));
 
@@ -29,49 +31,51 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
-var LOG = new _logger["default"]("RegisterController.js");
+var LOG = new _logger["default"]('RegisterController.js');
 
 var RegisterController = _express["default"].Router();
 
-exports.RegisterController = RegisterController;
-
 var RegisterHandler = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(req, res) {
+    var checkResult;
     return _regenerator["default"].wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            if (!(0, _expressValidator.validationResult)(req).errors.length) {
-              _context.next = 4;
+            checkResult = (0, _expressValidator.validationResult)(req).errors;
+
+            if (!checkResult.length) {
+              _context.next = 6;
               break;
             }
 
             res.sendStatus(_httpStatusCodes.BAD_REQUEST);
-            _context.next = 14;
+            LOG.error(checkResult);
+            _context.next = 16;
             break;
 
-          case 4:
-            _context.prev = 4;
-            _context.next = 7;
+          case 6:
+            _context.prev = 6;
+            _context.next = 9;
             return handleData(req.body);
 
-          case 7:
+          case 9:
             res.sendStatus(_httpStatusCodes.NO_CONTENT);
-            _context.next = 14;
+            _context.next = 16;
             break;
 
-          case 10:
-            _context.prev = 10;
-            _context.t0 = _context["catch"](4);
+          case 12:
+            _context.prev = 12;
+            _context.t0 = _context["catch"](6);
             res.sendStatus(_httpStatusCodes.INTERNAL_SERVER_ERROR);
             LOG.error(_context.t0);
 
-          case 14:
+          case 16:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[4, 10]]);
+    }, _callee, null, [[6, 12]]);
   }));
 
   return function RegisterHandler(_x, _x2) {
@@ -79,107 +83,96 @@ var RegisterHandler = /*#__PURE__*/function () {
   };
 }();
 
-exports.RegisterHandler = RegisterHandler;
-
 var handleData = /*#__PURE__*/function () {
   var _ref2 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(body) {
-    var teacher, students, subject, _class, upsertClass, upsertSubject, upsertTeacher, _iterator, _step, student, classId, subjectId, teacherId;
+    var teacher, students, subject, _class, ops, _yield$db$class$upser, _yield$db$class$upser2, classData, _yield$db$subject$ups, _yield$db$subject$ups2, subjectData, _yield$db$teacher$ups, _yield$db$teacher$ups2, teacherData, _iterator, _step, student, classId, subjectId, teacherId;
 
     return _regenerator["default"].wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            teacher = body.teacher, students = body.students, subject = body.subject, _class = body["class"]; // upsert received data
+            teacher = body.teacher, students = body.students, subject = body.subject, _class = body["class"];
+            ops = {
+              returning: true,
+              plain: true
+            }; // upsert received data and get ids after destructuring returned object
 
-            _context2.next = 3;
-            return _index.db["class"].upsert(_class, {
-              returning: true
-            });
+            _context2.next = 4;
+            return _index.db["class"].upsert(_class, ops);
 
-          case 3:
-            upsertClass = _context2.sent;
-            _context2.next = 6;
-            return _index.db.subject.upsert(subject, {
-              returning: true
-            });
-
-          case 6:
-            upsertSubject = _context2.sent;
+          case 4:
+            _yield$db$class$upser = _context2.sent;
+            _yield$db$class$upser2 = (0, _slicedToArray2["default"])(_yield$db$class$upser, 1);
+            classData = _yield$db$class$upser2[0].dataValues;
             _context2.next = 9;
-            return _index.db.teacher.upsert(teacher, {
-              returning: true
-            });
+            return _index.db.subject.upsert(subject, ops);
 
           case 9:
-            upsertTeacher = _context2.sent;
+            _yield$db$subject$ups = _context2.sent;
+            _yield$db$subject$ups2 = (0, _slicedToArray2["default"])(_yield$db$subject$ups, 1);
+            subjectData = _yield$db$subject$ups2[0].dataValues;
+            _context2.next = 14;
+            return _index.db.teacher.upsert(teacher, ops);
+
+          case 14:
+            _yield$db$teacher$ups = _context2.sent;
+            _yield$db$teacher$ups2 = (0, _slicedToArray2["default"])(_yield$db$teacher$ups, 1);
+            teacherData = _yield$db$teacher$ups2[0].dataValues;
+            // upsert students
             _iterator = _createForOfIteratorHelper(students);
-            _context2.prev = 11;
+            _context2.prev = 18;
 
             _iterator.s();
 
-          case 13:
+          case 20:
             if ((_step = _iterator.n()).done) {
-              _context2.next = 19;
+              _context2.next = 26;
               break;
             }
 
             student = _step.value;
-            _context2.next = 17;
-            return _index.db.student.upsert(student, {
-              returning: true
-            });
-
-          case 17:
-            _context2.next = 13;
-            break;
-
-          case 19:
             _context2.next = 24;
+            return _index.db.student.upsert(student);
+
+          case 24:
+            _context2.next = 20;
             break;
 
-          case 21:
-            _context2.prev = 21;
-            _context2.t0 = _context2["catch"](11);
+          case 26:
+            _context2.next = 31;
+            break;
+
+          case 28:
+            _context2.prev = 28;
+            _context2.t0 = _context2["catch"](18);
 
             _iterator.e(_context2.t0);
 
-          case 24:
-            _context2.prev = 24;
+          case 31:
+            _context2.prev = 31;
 
             _iterator.f();
 
-            return _context2.finish(24);
+            return _context2.finish(31);
 
-          case 27:
-            // get ids to upsert data into bridge tables
-            classId = upsertClass[0].dataValues.id;
-            subjectId = upsertSubject[0].dataValues.id;
-            teacherId = upsertTeacher[0].dataValues.id; // uspsert data to bridge tables
+          case 34:
+            classId = classData.id;
+            subjectId = subjectData.id;
+            teacherId = teacherData.id; // uspsert data to bridge tables
 
-            _context2.next = 32;
-            return _index.db.teacherClasses.upsert({
-              teacherId: teacherId,
-              classId: classId
-            }, {
-              returning: true
-            });
-
-          case 32:
-            _context2.next = 34;
+            _context2.next = 39;
             return _index.db.teacherSubjects.upsert({
               teacherId: teacherId,
               subjectId: subjectId,
               classId: classId
-            }, {
-              returning: true
             });
 
-          case 34:
+          case 39:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2, null, [[11, 21, 24, 27]]);
+    }, _callee2, null, [[18, 28, 31, 34]]);
   }));
 
   return function handleData(_x3) {
@@ -187,5 +180,8 @@ var handleData = /*#__PURE__*/function () {
   };
 }();
 
-RegisterController.use((0, _RequestValidator["default"])());
-RegisterController.post("/register", RegisterHandler);
+RegisterController.use((0, _RequestValidator["default"])()); // validate request before saving to database
+
+RegisterController.post('/register', RegisterHandler);
+var _default = RegisterController;
+exports["default"] = _default;

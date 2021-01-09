@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
@@ -24,7 +24,7 @@ var db = {}; //get all models
 exports.db = db;
 
 _fs["default"].readdirSync(__dirname).filter(function (file) {
-  return file.indexOf(".") !== 0 && file !== basename && file.slice(-3) === ".js";
+  return file.indexOf('.') !== 0 && file !== basename && file.slice(-3) === '.js';
 }).forEach(function (file) {
   var model = require(_path["default"].join(__dirname, file))(sequelize, _sequelize["default"].DataTypes);
 

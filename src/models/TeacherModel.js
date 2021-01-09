@@ -1,5 +1,5 @@
-"use strict";
-const { Model } = require("sequelize");
+'use strict';
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Teacher extends Model {
     // a teacher can be associated with multiple classes
@@ -11,11 +11,11 @@ module.exports = (sequelize, DataTypes) => {
   Teacher.init(
     {
       name: { type: DataTypes.STRING, allowNull: false },
-      email: { type: DataTypes.STRING, allowNull: false, unique: true },
+      email: { type: DataTypes.STRING, allowNull: false, unique: true }
     },
     {
       sequelize,
-      modelName: "teacher",
+      modelName: 'teacher'
     }
   );
   return Teacher;

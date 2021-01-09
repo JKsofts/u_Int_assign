@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
@@ -16,7 +16,7 @@ function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflec
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
 
-var _require = require("sequelize"),
+var _require = require('sequelize'),
     Model = _require.Model;
 
 module.exports = function (sequelize, DataTypes) {
@@ -32,7 +32,11 @@ module.exports = function (sequelize, DataTypes) {
 
     (0, _createClass2["default"])(teacherSubjects, null, [{
       key: "associate",
-      value: function associate(models) {}
+      value: function associate(models) {
+        this.hasMany(models.teacher);
+        this.hasMany(models.subject);
+        this.hasMany(models["class"]);
+      }
     }]);
     return teacherSubjects;
   }(Model);
@@ -42,29 +46,29 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.INTEGER,
       primaryKey: true,
       references: {
-        model: "teachers",
-        key: "id"
+        model: 'teachers',
+        key: 'id'
       }
     },
     subjectId: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       references: {
-        model: "subjects",
-        key: "id"
+        model: 'subjects',
+        key: 'id'
       }
     },
     classId: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       references: {
-        model: "classes",
-        key: "id"
+        model: 'classes',
+        key: 'id'
       }
     }
   }, {
     sequelize: sequelize,
-    modelName: "teacherSubjects"
+    modelName: 'teacherSubjects'
   });
   return teacherSubjects;
 };

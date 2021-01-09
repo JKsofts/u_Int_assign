@@ -11,14 +11,14 @@ var _express = _interopRequireDefault(require("express"));
 
 var _HealthcheckController = _interopRequireDefault(require("./controllers/HealthcheckController"));
 
-var _RegisterController = require("./controllers/RegisterController");
+var _RegisterController = _interopRequireDefault(require("./controllers/RegisterController"));
 
-var _WorkloadController = require("./controllers/WorkloadController");
+var _WorkloadController = _interopRequireDefault(require("./controllers/WorkloadController"));
 
 var router = _express["default"].Router();
 
-router.use("/", _RegisterController.RegisterController);
-router.use("/", _HealthcheckController["default"]);
-router.use("/", _WorkloadController.WorkloadController);
+router.use('/', _RegisterController["default"]);
+router.use('/', _HealthcheckController["default"]);
+router.use('/', _WorkloadController["default"]);
 var _default = router;
 exports["default"] = _default;

@@ -1,8 +1,8 @@
-import { createLogger, format, transports } from "winston";
+import { createLogger, format, transports } from 'winston';
 
 const { colorize, combine, metadata, timestamp, printf } = format;
 
-const { LOG_LEVEL = "info" } = process.env;
+const { LOG_LEVEL = 'info' } = process.env;
 
 /**
  * this customFormat will format the text and color only ERROR message to red
@@ -10,7 +10,7 @@ const { LOG_LEVEL = "info" } = process.env;
 const customFormat = printf((info) => {
   const message = `${info.timestamp}\t[${info.metadata.filename}]\t${info.level}\t${info.message}`;
 
-  if (info.level === "ERROR" || info.level === "WARN") {
+  if (info.level === 'ERROR' || info.level === 'WARN') {
     return colorize({ level: true }).colorize(
       info.level.toLowerCase(),
       message
@@ -32,7 +32,7 @@ const appLogger = createLogger({
     changeLevelToUpperCase(),
     metadata(),
     timestamp({
-      format: "YYYY-MM-DD HH:mm:ss",
+      format: 'YYYY-MM-DD HH:mm:ss',
     }),
     customFormat
   ),

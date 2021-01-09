@@ -1,10 +1,10 @@
-import "dotenv/config";
-import Logger from "./config/logger";
-import App from "./app";
-import { sequelize, db } from "./models/index";
+import 'dotenv/config';
+import Logger from './config/logger';
+import App from './app';
+import { sequelize } from './models/index';
 
 const MAX_RETRY = 20;
-const LOG = new Logger("server.js");
+const LOG = new Logger('server.js');
 const { PORT = 3000 } = process.env;
 
 const startApplication = async (retryCount) => {
@@ -22,7 +22,7 @@ const startApplication = async (retryCount) => {
       return;
     }
 
-    LOG.error("Unable to start application");
+    LOG.error('Unable to start application');
   }
 };
 

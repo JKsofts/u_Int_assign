@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.WorkloadController = exports.WorkloadHandler = void 0;
+exports["default"] = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -25,11 +25,9 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
-var LOG = new _logger["default"]("WorkloadController.js");
+var LOG = new _logger["default"]('WorkloadController.js');
 
 var WorkloadController = _express["default"].Router();
-
-exports.WorkloadController = WorkloadController;
 
 var WorkloadHandler = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(req, res) {
@@ -44,7 +42,7 @@ var WorkloadHandler = /*#__PURE__*/function () {
 
           case 3:
             teacherWorkload = _context.sent;
-            res.status(_httpStatusCodes.OK).send(teacherWorkload);
+            res.status(_httpStatusCodes.OK).json(teacherWorkload);
             _context.next = 11;
             break;
 
@@ -67,12 +65,9 @@ var WorkloadHandler = /*#__PURE__*/function () {
   };
 }();
 
-exports.WorkloadHandler = WorkloadHandler;
-WorkloadController.get("/workload", WorkloadHandler);
-
 var getTeachersWorkload = /*#__PURE__*/function () {
   var _ref2 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2() {
-    var workloadObject, teacherClasses, _iterator, _step, _class, _yield$getTeacherName, tName, _yield$getSubjectInfo, subjectCode, subjectName, numberOfClasses, SubjectWorkload;
+    var workloadObject, workloads, _iterator, _step, _class, _yield$getTeacherName, name, _yield$getSubjectInfo, subjectCode, subjectName, numberOfClasses, SubjectWorkload;
 
     return _regenerator["default"].wrap(function _callee2$(_context2) {
       while (1) {
@@ -83,8 +78,8 @@ var getTeachersWorkload = /*#__PURE__*/function () {
             return getClassesCount();
 
           case 3:
-            teacherClasses = _context2.sent;
-            _iterator = _createForOfIteratorHelper(teacherClasses);
+            workloads = _context2.sent;
+            _iterator = _createForOfIteratorHelper(workloads);
             _context2.prev = 5;
 
             _iterator.s();
@@ -101,7 +96,7 @@ var getTeachersWorkload = /*#__PURE__*/function () {
 
           case 11:
             _yield$getTeacherName = _context2.sent;
-            tName = _yield$getTeacherName.name;
+            name = _yield$getTeacherName.name;
             _context2.next = 15;
             return getSubjectInfo(_class);
 
@@ -114,9 +109,9 @@ var getTeachersWorkload = /*#__PURE__*/function () {
               subjectCode: subjectCode,
               subjectName: subjectName,
               numberOfClasses: numberOfClasses
-            }; // create a subject array & push workload for non-existing teachers name and push only for existing ones
-
-            !workloadObject[tName] ? (workloadObject[tName] = [], workloadObject[tName].push(SubjectWorkload)) : workloadObject[tName].push(SubjectWorkload);
+            };
+            !workloadObject[name] ? (workloadObject[name] = [], workloadObject[name].push(SubjectWorkload) // create an array & push subject workload for non-existing teachers
+            ) : workloadObject[name].push(SubjectWorkload); // and push only for the existing ones
 
           case 21:
             _context2.next = 7;
@@ -163,7 +158,7 @@ var getClassesCount = /*#__PURE__*/function () {
           case 0:
             _context3.next = 2;
             return _index.db.teacherSubjects.count({
-              group: ["teacherId", "subjectId"]
+              group: ['teacherId', 'subjectId']
             });
 
           case 2:
@@ -190,7 +185,7 @@ var getSubjectInfo = /*#__PURE__*/function () {
           case 0:
             _context4.next = 2;
             return _index.db.subject.findByPk(_class.subjectId, {
-              attributes: ["name", "subjectCode"],
+              attributes: ['name', 'subjectCode'],
               raw: true
             });
 
@@ -218,7 +213,7 @@ var getTeacherName = /*#__PURE__*/function () {
           case 0:
             _context5.next = 2;
             return _index.db.teacher.findByPk(_class.teacherId, {
-              attributes: ["name", "email"],
+              attributes: ['name'],
               raw: true
             });
 
@@ -237,3 +232,7 @@ var getTeacherName = /*#__PURE__*/function () {
     return _ref5.apply(this, arguments);
   };
 }();
+
+WorkloadController.get('/workload', WorkloadHandler);
+var _default = WorkloadController;
+exports["default"] = _default;

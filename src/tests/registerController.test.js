@@ -1,13 +1,26 @@
-import { RegisterHandler } from "../controllers/RegisterController";
-import request from "./__mocks__/request";
-import response from "./__mocks__/response";
+import request from 'supertest';
+import App from '../app';
+import { db } from '../models/index';
+import mockRequest from './__mocks__/goodRequest';
+import mockBadRequest from './__mocks__/badRequest';
 
-describe("test register post request", () => {
-  test("should return 204 (No content)", async () => {
-    expect(await RegisterHandler(request[0], response)).toBe(204);
+describe('test POST api/register', () => {
+  test('It should return 204', async (done) => {
+    const response = await request(App)
+      .post('/api/register')
+      .send(mockRequest.body);
+    await expect(response.statusCode).toBe(204);
+    done();
   });
-
-  test("should return 400 (bad request)", async () => {
-    expect(await RegisterHandler(request[1], response)).toBe(204);
+  test('It should return 400 with a bad request body', async (done) => {
+    const response = await request(App)
+      .post('/api/register')
+      .send(mockBadRequest.body);
+    await expect(response.statusCode).toBe(400);
+    done();
+  });
+  afterAll(async (done) => {
+    db.sequelize.close();
+    done();
   });
 });

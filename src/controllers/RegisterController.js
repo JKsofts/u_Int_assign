@@ -1,10 +1,11 @@
 import Express from 'express';
+import { validationResult } from 'express-validator';
 import {
   NO_CONTENT,
   BAD_REQUEST,
-  INTERNAL_SERVER_ERROR
+  INTERNAL_SERVER_ERROR,
 } from 'http-status-codes';
-import { validationResult } from 'express-validator';
+
 import Logger from '../config/logger';
 import { db } from '../models/index';
 
@@ -15,8 +16,11 @@ const LOG = new Logger('RegisterController.js');
 const RegisterController = Express.Router();
 
 const RegisterHandler = async (req, res) => {
-  if (validationResult(req).errors.length) res.sendStatus(BAD_REQUEST);
-  else {
+  const checkResult = validationResult(req).errors;
+  if (checkResult.length) {
+    res.sendStatus(BAD_REQUEST);
+    LOG.error(checkResult);
+  } else {
     try {
       await handleData(req.body);
       res.sendStatus(NO_CONTENT);
@@ -31,39 +35,27 @@ const handleData = async (body) => {
   const { teacher, students, subject, class: _class } = body;
   const ops = {
     returning: true,
-    plain: true
+    plain: true,
   };
+  // upsert received data and get ids after destructuring returned object
+  const [{ dataValues: classData }] = await db.class.upsert(_class, ops);
+  const [{ dataValues: subjectData }] = await db.subject.upsert(subject, ops);
+  const [{ dataValues: teacherData }] = await db.teacher.upsert(teacher, ops);
 
-  // upsert received data and destructure returned object to get ids
-  const [
-    {
-      dataValues: { id: classId }
-    }
-  ] = await db.class.upsert(_class, ops);
-  const [
-    {
-      dataValues: { id: subjectId }
-    }
-  ] = await db.subject.upsert(subject, ops);
-  const [
-    {
-      dataValues: { id: teacherId }
-    }
-  ] = await db.teacher.upsert(teacher, ops);
-
+  // upsert students
   for (const student of students) {
-    await db.student.upsert(student, { returning: true });
+    await db.student.upsert(student);
   }
 
+  const { id: classId } = classData;
+  const { id: subjectId } = subjectData;
+  const { id: teacherId } = teacherData;
+
   // uspsert data to bridge tables
-  await db.teacherClasses.upsert({ teacherId, classId }, { returning: true });
-  await db.teacherSubjects.upsert(
-    { teacherId, subjectId, classId },
-    { returning: true }
-  );
+  await db.teacherSubjects.upsert({ teacherId, subjectId, classId });
 };
 
-RegisterController.use(validate());
+RegisterController.use(validate()); // validate request before saving to database
 RegisterController.post('/register', RegisterHandler);
 
-export { RegisterHandler, RegisterController };
+export default RegisterController;

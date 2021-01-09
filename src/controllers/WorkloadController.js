@@ -8,14 +8,12 @@ const WorkloadController = Express.Router();
 const WorkloadHandler = async (req, res) => {
   try {
     let teacherWorkload = await getTeachersWorkload();
-    res.status(OK).send(teacherWorkload);
+    res.status(OK).json(teacherWorkload);
   } catch (error) {
     LOG.error(error);
     res.sendStatus(INTERNAL_SERVER_ERROR);
   }
 };
-
-WorkloadController.get('/workload', WorkloadHandler);
 
 const getTeachersWorkload = async () => {
   let workloadObject = {};
@@ -27,11 +25,10 @@ const getTeachersWorkload = async () => {
     const { count: numberOfClasses } = _class;
     const SubjectWorkload = { subjectCode, subjectName, numberOfClasses };
 
-    // create a subject array & push workload for non-existing teachers name and push only for existing ones
     !workloadObject[name]
       ? ((workloadObject[name] = []),
-        workloadObject[name].push(SubjectWorkload))
-      : workloadObject[name].push(SubjectWorkload);
+      workloadObject[name].push(SubjectWorkload)) // create an array & push subject workload for non-existing teachers
+      : workloadObject[name].push(SubjectWorkload); // and push only for the existing ones
   }
 
   return workloadObject;
@@ -57,4 +54,5 @@ const getTeacherName = async (_class) => {
   });
 };
 
-export { WorkloadHandler, WorkloadController };
+WorkloadController.get('/workload', WorkloadHandler);
+export default WorkloadController;
