@@ -1,13 +1,13 @@
-"use strict";
+'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable("teacherSubjects", {
+    await queryInterface.createTable('teacherSubjects', {
       teacherId: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         references: {
-          model: "teachers",
-          key: "id",
+          model: 'teachers',
+          key: 'id',
         },
         allowNull: false,
       },
@@ -15,8 +15,8 @@ module.exports = {
         type: Sequelize.INTEGER,
         primaryKey: true,
         references: {
-          model: "subjects",
-          key: "id",
+          model: 'subjects',
+          key: 'id',
         },
         allowNull: false,
       },
@@ -24,8 +24,8 @@ module.exports = {
         type: Sequelize.INTEGER,
         primaryKey: true,
         references: {
-          model: "classes",
-          key: "id",
+          model: 'classes',
+          key: 'id',
         },
         allowNull: false,
       },
@@ -39,7 +39,7 @@ module.exports = {
       },
     });
   },
-  down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("teacherSubjects");
+  down: async (queryInterface) => {
+    await queryInterface.dropTable('teacherSubjects');
   },
 };

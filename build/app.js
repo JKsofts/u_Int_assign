@@ -26,7 +26,7 @@ App.use(_bodyParser["default"].json());
 App.use(_bodyParser["default"].urlencoded({
   extended: true
 }));
-App.use("/api", _router["default"]);
+App.use('/api', _router["default"]);
 App.use(_globalErrorHandler["default"]);
 var _default = App;
 exports["default"] = _default;

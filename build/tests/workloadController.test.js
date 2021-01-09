@@ -10,7 +10,7 @@ var _supertest = _interopRequireDefault(require("supertest"));
 
 var _app = _interopRequireDefault(require("../app"));
 
-describe('test GET workload ', function () {
+describe('test GET workload API ', function () {
   test('It should return 200', /*#__PURE__*/function () {
     var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(done) {
       var response;

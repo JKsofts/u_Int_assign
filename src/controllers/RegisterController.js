@@ -10,7 +10,7 @@ import Logger from '../config/logger';
 import { db } from '../models/index';
 
 //validation middleware
-import validate from '../validators/RequestValidator';
+import validate from '../validators/RegisterRequestValidator';
 
 const LOG = new Logger('RegisterController.js');
 const RegisterController = Express.Router();

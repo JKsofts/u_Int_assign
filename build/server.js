@@ -15,7 +15,7 @@ var _app = _interopRequireDefault(require("./app"));
 var _index = require("./models/index");
 
 var MAX_RETRY = 20;
-var LOG = new _logger["default"]("server.js");
+var LOG = new _logger["default"]('server.js');
 var _process$env$PORT = process.env.PORT,
     PORT = _process$env$PORT === void 0 ? 3000 : _process$env$PORT;
 
@@ -70,7 +70,7 @@ var startApplication = /*#__PURE__*/function () {
             return _context2.abrupt("return");
 
           case 13:
-            LOG.error("Unable to start application");
+            LOG.error('Unable to start application');
 
           case 14:
           case "end":

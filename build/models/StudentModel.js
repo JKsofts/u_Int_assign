@@ -1,10 +1,8 @@
-"use strict";
+'use strict';
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
-
-var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
 
 var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
 
@@ -16,7 +14,7 @@ function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflec
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
 
-var _require = require("sequelize"),
+var _require = require('sequelize'),
     Model = _require.Model;
 
 module.exports = function (sequelize, DataTypes) {
@@ -30,10 +28,6 @@ module.exports = function (sequelize, DataTypes) {
       return _super.apply(this, arguments);
     }
 
-    (0, _createClass2["default"])(Student, null, [{
-      key: "associate",
-      value: function associate(models) {}
-    }]);
     return Student;
   }(Model);
 
@@ -49,7 +43,7 @@ module.exports = function (sequelize, DataTypes) {
     }
   }, {
     sequelize: sequelize,
-    modelName: "student"
+    modelName: 'student'
   });
   return Student;
 };
